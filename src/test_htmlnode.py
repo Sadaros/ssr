@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_href(self):
@@ -17,7 +17,6 @@ class TestHTMLNode(unittest.TestCase):
             "color": "black",
             "min_width": "10px",
         })
-        print(node.props_to_html())
         self.assertEqual(node.props_to_html(), ' color="black" min_width="10px"')
 
 
@@ -34,3 +33,23 @@ class TestLeafNode(unittest.TestCase):
     def test_to_html_props(self):
         node = LeafNode(value="Heisann", tag="h1", props={"font-size": "24", "color": "red"})
         self.assertEqual(node.to_html(), '<h1 font-size="24" color="red">Heisann</h1>')
+
+
+class TestParentNode(unittest.TestCase):
+
+    def test_single_item_parent(self):
+        node = ParentNode(tag="ul", children=[
+            LeafNode(value="Leaf Node Single", tag="li")
+        ])
+        self.assertEqual(node.to_html(), "<ul><li>Leaf Node Single</li></ul>")
+
+    def test_long_single_list(self):
+        node = ParentNode(tag="ul", children=[
+            LeafNode(value="Leaf Node 1", tag="li"),
+            LeafNode(value="Leaf Node 2", tag="li"),
+            LeafNode(value="Leaf Node 3", tag="li"),
+        ])
+        self.assertEqual(node.to_html(), "<ul><li>Leaf Node 1</li><li>Leaf Node 2</li><li>Leaf Node 3</li></ul>")
+
+if __name__ == "__main__":
+    unittest.main()
