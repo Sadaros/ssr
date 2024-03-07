@@ -1,11 +1,12 @@
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
-text_type_text = "text"
-text_type_bold = "bold"
-text_type_italic = "italic"
-text_type_code = "code"
-text_type_link = "link"
-text_type_image = "image"
+class TextType:
+    text = "text"
+    bold = "bold"
+    italic = "italic"
+    code = "code"
+    link = "link"
+    image = "image"
 
 text_types: list[str] = ["text", "bold", "italic", "code", "link", "image",]
 
@@ -33,18 +34,18 @@ def text_node_to_html_node(text_node: TextNode) -> LeafNode:
     if text_node.text_type not in text_types:
         raise TypeError(f"{text_node.text_type} is not an allowed text_type")
     
-    if text_node.text_type == text_type_text:
+    if text_node.text_type == TextType.text:
         return LeafNode(value=text_node.text)
-    if text_node.text_type == text_type_bold:
+    if text_node.text_type == TextType.bold:
         return LeafNode(value=text_node.text, tag="b")
-    if text_node.text_type == text_type_italic:
+    if text_node.text_type == TextType.italic:
         return LeafNode(value=text_node.text, tag="i")
-    if text_node.text_type == text_type_code:
+    if text_node.text_type == TextType.code:
         return LeafNode(value=text_node.text, tag="code")
     if text_node.url:
-        if text_node.text_type == text_type_link:
+        if text_node.text_type == TextType.link:
             return LeafNode(value=text_node.text, tag="a", props={"href": text_node.url})
-        if text_node.text_type == text_type_image:
+        if text_node.text_type == TextType.image:
             return LeafNode(value="", tag="img", props={"src": text_node.url, "alt": text_node.text})
     else:
         raise ValueError(f"Must provide url to use {text_node.text_type} type element")        

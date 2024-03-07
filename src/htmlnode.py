@@ -9,10 +9,14 @@ class HTMLNode:
         return f"HTMLNode(tag: {self.tag}, value: {self.value}, children: {self.children}, props: {self.props}"
 
     def to_html(self):
+        """Not implemented on HTMLNode"""
         raise NotImplementedError("to_html method not implemented")
     
     def props_to_html(self) -> str:
-        """Props always start with an empty space."""
+        """
+        Props always start with an empty space. \n
+        Transforms props on Node to HTML compatible string.
+        """
         if self.props is None:
             return ""
         html_str = ''
@@ -27,6 +31,7 @@ class LeafNode(HTMLNode):
         self.children = []
 
     def to_html(self) -> str:
+        """Transforming a LeafNode to HTML strings."""
         if self.value is None:
             raise ValueError("all leaf nodes require a value")
         if self.tag is None:
@@ -46,6 +51,7 @@ class ParentNode(HTMLNode):
         return f"ParentNode(children: {self.children}, tag: {self.tag}, props: {self.props})"
     
     def to_html(self):
+        """Transforming a ParentNode to HTML strings."""
         if self.tag is None:
             raise ValueError("tag must not be None")
         if self.children is None:

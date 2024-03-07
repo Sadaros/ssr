@@ -11,7 +11,9 @@ from textnode import (
     text_types
 )
 from inline_markdown import (
-    split_nodes_delimiter
+    split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links
 )
 
 class TestSplitNodes(unittest.TestCase):
@@ -33,8 +35,6 @@ class TestSplitNodes(unittest.TestCase):
             TextNode(" word", text_type_text)
         ])
 
-
-class TestInlineMarkdown(unittest.TestCase):
     def test_delim_bold(self):
         node = TextNode("This is text with a **bolded** word", text_type_text)
         new_nodes = split_nodes_delimiter([node], "**", text_type_bold)
@@ -101,6 +101,37 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             new_nodes,
         )
+
+
+class TestExtractImage(unittest.TestCase):
+
+    def test_multiple_markdown_images(self):
+        text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+        extracted_text = extract_markdown_images(text)
+        self.assertEqual(extracted_text, [("image", "https://i.imgur.com/zjjcJKZ.png"), ("another", "https://i.imgur.com/dfsdkjfd.png")])
+
+    def test_image_and_link(self):
+        text = "This is text with ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://imgur.com/zjjcJKZ)"
+        extracted_text = extract_markdown_images(text)
+        self.assertEqual(extracted_text, [("image", "https://i.imgur.com/zjjcJKZ.png")])
+    
+    def test_extract_link_with_image(self):
+        text = "This is text with a [link](google.com) and [another link](firefox.com)"
+        extracted_text = extract_markdown_images(text)
+        self.assertEqual(extracted_text, [])
+
+
+class TestExtractLinks(unittest.TestCase):
+
+    def test_single_link(self):
+        text = "This is text with a [link](google.com)"
+        extracted_text = extract_markdown_links(text)
+        self.assertEqual(extracted_text, [("link", "google.com")])
+
+    def test_multiple_links(self):
+        text = "This is text with a [link](google.com) and [another link](python.org)"
+        extracted_text = extract_markdown_links(text)
+        self.assertEqual(extracted_text, [("link", "google.com"), ("another link", "python.org")])
 
 
 if __name__ == "__main__":

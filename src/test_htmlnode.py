@@ -3,14 +3,13 @@ import unittest
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
+
     def test_props_href(self):
         node = HTMLNode(props={
             "href": "https://google.com",
             "target": "_blank",
             })
         self.assertEqual(node.props_to_html(), ' href="https://google.com" target="_blank"')
-
-
 
     def test_props_css(self):
         node = HTMLNode(props={
@@ -50,6 +49,7 @@ class TestParentNode(unittest.TestCase):
             LeafNode(value="Leaf Node 3", tag="li"),
         ])
         self.assertEqual(node.to_html(), "<ul><li>Leaf Node 1</li><li>Leaf Node 2</li><li>Leaf Node 3</li></ul>")
+        
 
 if __name__ == "__main__":
     unittest.main()
