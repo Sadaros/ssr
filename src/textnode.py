@@ -1,6 +1,7 @@
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TextType:
+    """All the valid TextNode types"""
     text = "text"
     bold = "bold"
     italic = "italic"
@@ -13,7 +14,7 @@ text_types: list[str] = ["text", "bold", "italic", "code", "link", "image",]
 
 class TextNode:
 
-    def __init__(self, text: str, text_type: str, url: str = None) -> None:
+    def __init__(self, text: str, text_type: str, url: str | None = None) -> None:
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -29,7 +30,7 @@ class TextNode:
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
     
 
-def text_node_to_html_node(text_node: TextNode) -> LeafNode:
+def text_node_to_html_node(text_node: TextNode) -> LeafNode | None:
     """Converts TextNode objects to LeafNode objects of the correct type."""
     if text_node.text_type not in text_types:
         raise TypeError(f"{text_node.text_type} is not an allowed text_type")

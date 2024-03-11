@@ -1,3 +1,5 @@
+"""This implements the classes that will return html strings on their methods"""
+
 class HTMLNode:
     def __init__(self, tag: str = None, value: str = None, children: list = None, props: dict = None) -> None:
         self.tag = tag
@@ -59,7 +61,6 @@ class ParentNode(HTMLNode):
         
         html_str = f"<{self.tag}{self.props_to_html()}>"
         for node in self.children:
-#            print(f"Parent node loop: {node}")
             html_str += node.to_html()
         html_str += f"</{self.tag}>"
         return html_str
